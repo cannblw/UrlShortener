@@ -7,16 +7,21 @@
         <div class="col-sm">
             <h1>Introduce the URL you want to shorten...</h1>
 
-            <div class="form-group">
-                <input type="text" class="form-control" id="url-input">
-                <button type="submit" class="btn btn-primary" id="submit-btn">Submit</button>
-            </div>
+            <form id="form">
+                <div class="form-group">
+                    <input type="text" class="form-control" id="url-input">
+                    <button class="btn btn-primary" id="submit-btn">Submit</button>
+                </div>
+            </form>
         </div>
     </div>
 
     <div class="row response-margin center-text">
-        <div class="col-sm">
-            <span id="response"></span>
+        <div class="col-sm center-block">
+            <center>
+                <span id="response"></span>
+                <span id="error-detail"></span>
+            </center>
         </div>
     </div>
 </div>

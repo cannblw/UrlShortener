@@ -1,21 +1,59 @@
-$('#submit-btn').click(() => {
-    const url = $('#url-input').val();
-    let html = '';
+$(document).ready(() => {
+    const urlInput = $('#url-input');
+    const responseContainer = $('#response');
+    const detailedErrorContainer = $('#error-detail');
 
-    const success = data => {
-        const urlId = data.data.urlId;
+    $('#form').on('submit', e => {
+        e.preventDefault();
 
-        $('#response').html('Your shortened url is <a href="' + window.baseUrl + '/' + urlId + '">' + window.baseUrl + '/' + urlId + '</a>');
-    }
+        const url = urlInput.val();
 
-    const error = () => {
-        $('#response').html('We\'re sorry, there was an error processing your request... :(');
-    }
+        // Display loader
+        responseContainer.html('<div class="loader"></div>');
 
-    $.ajax({
-        url: '/api/shorten',
-        data: {url: url},
-        success: success,
-        error: error
+        const success = data => {
+            const urlID = data.data.urlID;
+            detailedErrorContainer.html('')
+            responseContainer.html('Your shortened url is <a href="' + window.baseUrl + '/' + urlID + '">' + window.baseUrl + '/' + urlID + '</a>');
+        }
+
+        const error = (req, status, err) => {
+            const data = JSON.parse(req.responseText);
+
+            responseContainer.html('There was an error processing your request... :(');
+            detailedErrorContainer.html(data.message)
+        }
+
+        // Check if the input is a correct URL
+        const re = /^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/;
+
+        if (!re.test(url)) {
+            urlInput.addClass('is-invalid');
+            responseContainer.html('Please, enter a valid URL.');
+        } else {
+            urlInput.removeClass('is-invalid');
+
+            $.ajax({
+                type: 'POST',
+                url: '/api/shorten',
+                data: {url: url},
+                success: success,
+                error: error
+            });
+        }
     });
+
+    $('#url-input').on('input', () => {
+        if(urlInput.hasClass('is-invalid')) {
+            urlInput.removeClass('is-invalid');
+        }
+
+        if (responseContainer.html() != '') {
+            responseContainer.html('');
+        }
+
+        if (detailedErrorContainer.html() != '') {
+            detailedErrorContainer.html('');
+        }
+    })
 });
