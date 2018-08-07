@@ -3,11 +3,9 @@ $('#submit-btn').click(() => {
     let html = '';
 
     const success = data => {
-        console.log(data);
+        const urlId = data.data.urlId;
 
-        const id = 'dsdsadsad';
-
-        $('#response').html('Your shortened url is <a href="{{baseUrl}}/' + id + '">{{baseUrl}}/' + id + '</a>');
+        $('#response').html('Your shortened url is <a href="' + window.baseUrl + '/' + urlId + '">' + window.baseUrl + '/' + urlId + '</a>');
     }
 
     const error = () => {
