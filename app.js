@@ -5,6 +5,7 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var helmet = require('helmet');
 var cors = require('cors');
+var csrf = require('csurf');
 require('dotenv').config();
 
 var indexRouter = require('./routes/index');
@@ -31,6 +32,11 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+// CSRF middleware
+app.use(csrf({
+    cookie: true
+}));
+
 app.use('/', indexRouter);
 app.use('/api', apiRouter);
 
@@ -44,6 +50,14 @@ app.use(function(err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
+
+  // CSRF error
+  if (err.code == 'EBADCSRFTOKEN') {
+      return res.status(403).send({
+          status: 'error',
+          message: 'Invalid CSRF token.'
+      })
+  }
 
   // render the error page
   res.status(err.status || 500);

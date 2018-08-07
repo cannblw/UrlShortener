@@ -2,6 +2,16 @@ $(document).ready(() => {
     const urlInput = $('#url-input');
     const responseContainer = $('#response');
     const detailedErrorContainer = $('#error-detail');
+    const token = $('meta[name="csrf-token"]').attr('content');
+
+    $.ajaxSetup({
+        beforeSend: xhr => {
+            xhr.setRequestHeader('Csrf-Token', token);
+        },
+        xhrFields: {
+            withCredentials: true
+        }
+    });
 
     $('#form').on('submit', e => {
         e.preventDefault();
