@@ -1,6 +1,24 @@
 {% extends 'layout.twig' %}
 
 {% block body %}
-    <h1>Introduce the URL you want to shorten...</h1>
-    <p>Welcome to {{title}}</p>
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm">
+            <h1>Introduce the URL you want to shorten...</h1>
+
+            <div class="form-group">
+                <input type="text" class="form-control" id="url-input">
+                <button type="submit" class="btn btn-primary" id="submit-btn">Submit</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="row response-margin center-text">
+        <div class="col-sm">
+            <span id="response"></span>
+        </div>
+    </div>
+</div>
+
 {% endblock %}

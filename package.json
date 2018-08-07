@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "nodemon ./bin/start.js --exec babel-node --presets env,stage-2",
+    "start": "nodemon -e twig,css ./bin/start.js --exec babel-node --presets env,stage-2",
     "build": "babel lib -d dist",
     "serve": "node dist/index.js",
     "test": "mocha --compilers js:babel-register"
